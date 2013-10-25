@@ -1,0 +1,243 @@
+-== BUFFER OVERFLOWS INTRODUCTION ==-
+    .: Stack Smashing Tutorial :.
+
+1. MEMORY OVERVIEW
+
+    A compiled linux executable
+
+    +------
+    | TEXT      <--- code
+    +------
+    | DATA      <---- [ like strings ]
+    +------
+    | BSS       <-- globals
+    +------
+    | HEAP      <--- allocateable space
+    +-----
+    | STACK     <-- temporary memory for functions
+    +-----
+
+    
+  ========
+   STACKS
+  ========
+    
+    + a stack is a place for local function variables to go
+
+    + consider a recursive function call 
+
+    + LIFO; last in-first out
+
+
+        def foo (arg):
+
+            a = 1
+            b = 2
+           
+            return bar (arg)
+
+
+        def bar (arg):
+
+            print arg
+            return baz()
+
+        def baz ():
+            d = True
+            print "baz called"
+
+        foo(5)
+
+        # this creates a stack that looks like this
+   
+        # foo called
+
+        STACK
+        -----
+        foo's stack frame [ room for foo's local variables are pushed ]
+        [ a = 1 ]
+        [ b = 2 ] 
+
+        # bar called
+
+        STACK
+        -----
+        bar's stack frame [ room for bar's local variables (none) are pushed ]
+        [       ]
+        foo's stack frame
+        [ a = 1 ]
+        [ b = 2 ] 
+
+        # baz called
+
+        STACK
+        -----
+        baz's stack frame [ room for baz's local variable are pushed ]
+        [ d = True ]
+        bar's stack frame 
+        [       ]
+        foo's stack frame
+        [ a = 1 ]
+        [ b = 2 ]
+
+        # baz exits 
+
+        [ baz's memory is popped ]
+        bar's stack frame
+        [       ] 
+        foo's stack frame
+        [ a = 1 ]
+        [ b = 2 ]
+
+        # bar exits 
+        [ bar's memory is popped ] 
+        foo's stack frame
+        [ a = 1 ] 
+        [ b = 2 ] 
+
+        # eventually foo exits
+        [ foo's memory is popped ] 
+
+    + control information stored on the stack
+        
+        * besides just room for local variables control information must also be 
+          stored on the stack
+
+          - position of the caller's stack frame
+
+          - address into text section back to caller 
+
+2. OVERWRITING MEMORY
+
+    a. C AND POINTERS
+
+        AN ARRAY:
+        
+        char buf[256];
+
+        A LOCATION: 
+
+        buf[3] = 'a';
+
+        {indexing abstraction}
+
+        (what low-level operations do these translate to?)
+
+        *(buf + 3) = 'a'
+
+        {pointer arithmetic abstraction}
+
+        ===
+
+        lea eax, [ebp-0x104]
+        mov [eax+3*1], 0x61
+
+        {no abstraction}
+
+        (how would this change if it was an array of ints?)
+
+        i. Character Array
+
+            * a string
+
+            * how do we signify the end of a string?
+
+            * '\0' = 0x0 = 0
+
+    b. strcpy
+
+        function to copy a character array or string into a buffer.
+
+        from strcpy man page: 
+
+        -------------------------------------------------------------------------------
+
+        SYNOPSIS
+            #include <string.h>
+
+            char *strcpy(char *dest, const char *src);
+
+            char *strncpy(char *dest, const char *src, size_t n);
+
+        DESCRIPTION
+            The strcpy() function copies the string pointed to by src, including the 
+            terminating null byte ('\0'), to the buffer pointed to by dest.  The strings
+            may not overlap,  and  the  destination string dest must be large enough to 
+            receive the copy.
+
+        -------------------------------------------------------------------------------
+
+        How can we crash this implementation of the echo command written in C?
+
+        --%<----%<----%<----%<----%<----%<----%<----%<----%<----%<--
+
+        #include <stdio.h>
+        #include <string.h>
+
+        int main(int argc, char *argv[])
+        {
+            char buf[256]; // <- a character buffer stored on main's stack frame
+                                // how many bytes large is it?
+
+            strcpy(buf, argv[1]); // argv[1] is the first command-line argument passed
+                                  // to this program. We are referencing an index into
+                                  // an array of strings.
+
+            printf("%s\n", buf); // just a simple printing function
+
+        }
+        
+        ---%<----%<----%<----%<----%<----%<----%<----%<----%<----%<--
+
+        $ gcc -o echo echo.c # compiling the program
+        $ ./echo hello
+        hello
+
+        
+        $ ./echo `perl -e 'print "A"x500'`
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        Segmentation fault
+
+        The A's overwrote the return address stored on the stack in main's stack frame.
+
+        the assembly produced from compiling C code doesn't care if you write
+        to a part of memory outside the buffer.
+
+3. TOOLS
+
+    + investigating a binary with gdb, objdump and readelf    
+
+    + gdb (gnu debugger)
+        * allows you to set break points and inspect memory
+
+    + readelf 
+        * display helpful information about the target binary
+
+    + objdump 
+        * disassemble binaries (other utilities as well, overlaps with readelf)
+
+4. LOW-LEVEL DETAILS
+    
+    + Intel x86 is little endian
+
+        * The least signifigant byte is stored where you would expect the most 
+          signifigant byte
+
+          example:
+            int a = 4000
+            
+            big endian (normal)
+            00 00 0f a0
+
+            little endian
+            a0 0f 00 00 
+
+    + ia32 linux calling convention
+        
+        * on the assembly level functions are called with the 'call' instruction
+
+        * arguments are passed by pushing them to the stack 
+
+        foo(a, b) -> 'push b'
+                     'push a'
+                     'call foo'
