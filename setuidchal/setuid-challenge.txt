@@ -1,0 +1,60 @@
+# mike_pizza
+# setuid and RLIMIT_NPROC 
+
+# NOTE: a "patch" for this was submitted in March 2011, so will likely not run on newer 
+# versions of Linux. This article will be using Linux 2.6
+
+the problem:
+    Setuid has more than just one error condition. 
+
+    -%<--%<--%<--%<--%<--%<--%<--%<--%<--%<-
+
+    ERRORS
+           EAGAIN The uid does  not  match  the  current  uid  and  uid  brings  process  over
+           its RLIMIT_NPROC resource limit.
+
+           EPERM  The  user  is not privileged (Linux: does not have the CAP_SETUID capability
+           ) and uid does not match the real UID or saved set-user-ID of the calling process.
+
+    -%<--%<--%<--%<--%<--%<--%<--%<--%<--%<-
+
+    Pay particular attention to circumstances under which the EAGIN error condition occurs. We
+    can exploit this in programs which lower priviledges via setuid and do not check the
+    function call's return code.
+
+exploiting it:
+
+    The basic attack is simple. Spawn enough processes, via the fork system call, to reach
+    the defined RLIMIT_NPROC. If you have the maximum number of processes any calls to setuid
+    in an attempt to give you ownership of a process should fail.
+    
+    Of course, depending on the program you are trying to exploit, your technique may have
+    to adapt, and some very elegant techniques exist for some programs which raise and lower
+    priviledges in a certain way. 
+
+the lab:
+    
+    To play with this yourself get a machine with a 2.6 kernel. If you can't find one, 
+    I recommend installing ubuntu server on a virtual machine and then following this guide 
+    on how to compile and install a 2.6 kernel on a debian system.
+    (guide: http://www.howtoforge.com/kernel_compilation_ubuntu)
+
+    + download ./vuln.c
+
+    + create a vuln.pass file
+
+    + modify the source code vuln.c to reflect the new location of vuln.pass
+
+    + compile vuln.c, chown it so it belongs to root, and set the sticky bit of the file
+    (chmod u+s <file>)
+
+    + figure out a way to drop a root shell
+
+    - if you need any hints, find me on IRC!
+
+helpful man pages:
+    * fork
+    * execve
+    * pipe
+    * setuid
+    * getrlimit
