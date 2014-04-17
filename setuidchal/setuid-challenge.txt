@@ -4,6 +4,9 @@
 # NOTE: a "patch" for this was submitted in March 2011, so will likely not run on newer 
 # versions of Linux. This article will be using Linux 2.6
 
+UPDATE: here's a distro running a 2.4 kernel, this will let you skip the
+kernel installation process (http://www.damnsmalllinux.org/)
+
 the problem:
     Setuid has more than just one error condition. 
 
@@ -56,5 +59,6 @@ helpful man pages:
     * fork
     * execve
     * pipe
+	* limits.conf
     * setuid
     * getrlimit
