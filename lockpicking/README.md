@@ -57,10 +57,12 @@
 ![An example of how locks with master keys are pinned](img/master-key-pinning.png)
 
 
-# Video Tutorial
-### To continue your lockpicking education, Schuyler Towne's video tutorial series is highly recommended. Click the picture below to jump to his introduction to lockpicking basics.
+# Video Tutorials
+### Schuyler Towne's video tutorial series is highly recommended for learning. Click the picture below to jump to his introduction to lockpicking basics.
+[![Schuyler Towne tutorial videos](img/schuyler-towne.png)](https://www.youtube.com/watch?v=TmhQ1la6Lgw&list=PLF2F1FC3FBFDA27DE)
 
-[![Schuyler Towne](img/schuyler-towne.png)](https://www.youtube.com/watch?v=TmhQ1la6Lgw&list=PLF2F1FC3FBFDA27DE)
+### Schuyler also had a great talk at DEFCON 19 about lock security, linked below.
+[![Schuyler Towne's DEFCON talk](img/schuyler-defcon.jpg)](https://www.youtube.com/watch?v=ChbyaXBKNY8)
 
 
 # Learning Materials
