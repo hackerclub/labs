@@ -15,6 +15,7 @@
 ### How a lock works with a normal key.
 ![Animation of a correct key inserting into a lock](img/key-inserting.gif)
 
+
 # Picking Locks
 ![An example of using a screwdriver as a tension wrench](img/fallout-picking.gif)
 
@@ -26,6 +27,7 @@
 
 ### Thus, when you apply the tension, only one of the pin stacks (key and driver pin) will be blocking the rotation. This pin is known as the “bound pin”.
 
+
 # Lockpicking Techniques
 ## Single-pin picking
 ### Single-pin picking is the most traditional lockpicking technique. The key (pun!) to single pin picking is using the pick to feel for the bound pin.
@@ -34,9 +36,11 @@
 ### As the driver of a bound pin clears the shear line, there will be an audible click. The pin is now considered to be “set” (goes from blue to grey in the above gif). 
 ### An easy way to tell if a pin is set is feeling the pressure - set pins don’t have pressure from the springs above them.
 
+
 # Raking
 ### Raking is a quicker, less precise technique. By moving all of the pins rapidly, the hope is they will catch on the shear line. Can be more damaging to a lock, but may open cheaper locks easily.
 ![An animation of raking a lock](img/raking-animation.gif)
+
 
 # Appendix
 ## Security Pins
@@ -52,8 +56,20 @@
 ### Implementing master keys is interesting - each lock must open for two different keys, one of which is the same for all locks. The diagram below shows an example of a lock supporting a master key.
 ![An example of how locks with master keys are pinned](img/master-key-pinning.png)
 
+
 # Video Tutorial
 ### To continue your lockpicking education, Schuyler Towne's video tutorial series is highly recommended. Click the picture below to jump to his introduction to lockpicking basics.
 
 [![Schuyler Towne](img/schuyler-towne.png)](https://www.youtube.com/watch?v=TmhQ1la6Lgw&list=PLF2F1FC3FBFDA27DE)
+
+
+# Learning Materials
+### As for the materials you'll need to practice, all we suggest you need is a tension wrench, hook pick, and half diamond pick (picks pictured below).
+![Medium hook pick](img/hook-pick.jpg)
+![Half diamond pick](img/diamond-pick.jpg)
+
+### A practice lock is also extremely helpful. Cutaway locks have a transparent side, allowing you to see the pins as you attempt to pick them.
+![A cutaway practice lock](img/cutaway-lock.jpg)
+
+#### These tools can all be found on Amazon or other online retailers for varying prices. If you'd like to try out or borrow some picks and practice locks before purchasing, talk to one of the Hacker Club coordinators. The club has tons of lockpicks and practice locks that we'd be more than willing to share.
 
