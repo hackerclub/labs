@@ -64,7 +64,7 @@
 
 
 # Learning Materials
-### As for the materials you'll need to practice, all we suggest you need is a tension wrench, hook pick, and half diamond pick (picks pictured below).
+### As for the materials you'll need to practice, all you need to start is a tension wrench, hook pick, and half diamond pick (picks pictured below).
 ![Medium hook pick](img/hook-pick.jpg)
 ![Half diamond pick](img/diamond-pick.jpg)
 
