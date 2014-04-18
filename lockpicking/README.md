@@ -55,5 +55,5 @@
 # Video Tutorial
 ### To continue your lockpicking education, Schuyler Towne's video tutorial series is highly recommended. Click the picture below to jump to his introduction to lockpicking basics.
 
-[![Schuyler Towne](schuyler-towne.png)](https://www.youtube.com/watch?v=TmhQ1la6Lgw&list=PLF2F1FC3FBFDA27DE)
+[![Schuyler Towne](img/schuyler-towne.png)](https://www.youtube.com/watch?v=TmhQ1la6Lgw&list=PLF2F1FC3FBFDA27DE)
 
