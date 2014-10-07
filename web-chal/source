@@ -1,0 +1,63 @@
+<head>
+	<title> SECURE LOGGER -- DEMO </title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<style>
+		#lock
+		{
+			width: 5%;
+			height: 7%;
+			float: right;
+			margin-top: -50px;
+		}
+	</style>
+</head>
+<html>
+<h1> Welcome to SECURE LOGGER </h1> <img id="lock" src="lock.png">
+<p> Tired of being five steps behind the hackers? Fortunately for you, the talented profressionals at CodeZen incorporated have a solution! </p>
+
+<hr>
+<?php
+if (isset($_GET['page']))
+{
+	include $_GET['page'];
+}
+else
+{
+	include "login-logger.php";
+
+	echo '<br>';
+	echo '<a class="btn btn-success" href="?page=login.log">View Logs</a>';
+}
+?>
+<hr>
+
+
+<div class="alert alert-danger">
+<h4> WARNING </h4>
+<p> This solution is not cheap, but it will allow you to put hackers behind bars. </p>
+</div>
+<a href="/">Secure LOGGER Home</a>
+</body>
+<h3> LOGIN LOGGER BETA 0.2a &copy; CodeZen </h3>
+
+<p> All attempts to login to this site are logged into a confidential file. This will make hackers think twice about trying to exploit a SQL Injection or XSS vulnerability on your site. Attempt to log in a few times then click 'view logs' below to see the CodeZen magic at work. </p>
+
+<form action="" method="post">
+	Username: <input type="text" name="username" placeholder="' or 1=1; --">
+	Password: <input type="password" name="password">
+        <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+<?php
+	if (isset($_POST['username']) && isset($_POST['password']))
+	{
+		$time = "<b>Time:</b> " . date("h:i D M jS o") . "<br>";
+		$username = "<b>Username:</b> " . $_POST['username'] . "<br>";
+		$password = "<b>Password:</b> " . $_POST['password'] . "<br>";
+		$tail = "<br>";
+		file_put_contents("login.log", $time . $username . $password . $tail, FILE_APPEND);
+		echo "<i>Attempt logged by SECURE LOGGER (c) CodeZen</i>";
+	}
+?>
